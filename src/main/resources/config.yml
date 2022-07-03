@@ -1,7 +1,15 @@
+#Your discord bot token
+bot-token: '1234'
+
+#The Id of the Discord channel for the Minecraft to Discord chat
 chat-channel-id: '1234'
 
 #The Minecraft to Discord Chat is enabled by default to disable it replace 'true' with 'false'
-Disc-MC-Chat: 'true'
+disc-mc-chat: 'true'
+
+#The minecraft to Discord Console chat is enabled by default to disable it replace 'true' with 'false'
+console-api: 'true'
+
 
 #SKIP THIS DON'T MATTER TOO MUCH
 advancementMap:
@@ -79,4 +87,4 @@ advancementMap:
   "husbandry/complete_catalogue": "A Complete Catalogue"
   "husbandry/tactical_fishing": "Tactial Fishing"
   "husbandry/balanced_diet": "A Balanced Diet"
-  "husbandry/obtain_netherite_hoe": "Nah because bro actually made a netherite hoe what a dumbass"
+  "husbandry/obtain_netherite_hoe": "Serious Dedication"

@@ -20,7 +20,6 @@ public final class Main extends JavaPlugin {
     public static TextChannel chatChannel;
     public static TextChannel consoleChannel;
     public static Plugin plugin;
-    private LogAppender appender;
 
     @SneakyThrows
     @Override
@@ -30,7 +29,7 @@ public final class Main extends JavaPlugin {
 
         saveDefaultConfig();
 
-        String botToken = "OTkyODY4MTQ4NTMxNDMzNTEy.GXG71C.vPxjIXnN8-RfgOjnIaLEukZGI9hicDZS-gEaEE";
+        String botToken = getConfig().getString("bot-token");
         try {
             jda = JDABuilder.createDefault(botToken)
                     .build()
@@ -45,21 +44,23 @@ public final class Main extends JavaPlugin {
             chatChannel = jda.getTextChannelById(chatChannelId);
         }
 
-
-        consoleChannel = jda.getTextChannelById("992861677773135932");
-        consoleChannel.sendMessage("Console Accesed");
-
+        String consoleChannelId = getConfig().getString("console-channel-id");
+        if (consoleChannelId != null) {
+            consoleChannel = jda.getTextChannelById(consoleChannelId);
+        }
 
         Logger logger = (Logger)LogManager.getRootLogger();
         LogAppender appender = new LogAppender();
 
-        if (getConfig().getString("Disc-Mc-Chat") == "true") {
+        if (getConfig().getString("disc-mc-chat") == "true") {
             jda.addEventListener(new DiscordListener());
             getServer().getPluginManager().registerEvents(new SpigotListener(), this);
         }
 
-        jda.addEventListener(new CommandListener());
-        logger.addAppender(appender);
+        if (getConfig().getString("console-api") == "true") {
+            jda.addEventListener(new CommandListener());
+            logger.addAppender(appender);
+        }
 
 
     }
