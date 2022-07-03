@@ -33,6 +33,8 @@ public class SpigotListener extends JavaPlugin implements Listener {
         }
     }
 
+
+    // says what to do when someone types, joins, leaves, dies, or gets a achievement
     @EventHandler
     private void onChat(AsyncPlayerChatEvent event) {
         sendMessage(event.getPlayer(), event.getMessage(), false, Color.GRAY);

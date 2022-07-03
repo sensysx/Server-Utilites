@@ -1,10 +1,7 @@
 package me.sensys.serverutils;
 
 import lombok.SneakyThrows;
-import me.sensys.serverutils.listeners.CommandListener;
-import me.sensys.serverutils.listeners.DiscordListener;
-import me.sensys.serverutils.listeners.LogAppender;
-import me.sensys.serverutils.listeners.SpigotListener;
+import me.sensys.serverutils.listeners.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -16,9 +13,11 @@ import org.apache.logging.log4j.core.Logger;
 
 public final class Main extends JavaPlugin {
 
+    // varibles
     public static JDA jda;
     public static TextChannel chatChannel;
     public static TextChannel consoleChannel;
+    public static TextChannel whitelistChannel;
     public static Plugin plugin;
 
     @SneakyThrows
@@ -29,6 +28,7 @@ public final class Main extends JavaPlugin {
 
         saveDefaultConfig();
 
+        // logs into bot
         String botToken = getConfig().getString("bot-token");
         try {
             jda = JDABuilder.createDefault(botToken)
@@ -39,6 +39,7 @@ public final class Main extends JavaPlugin {
 
         }
 
+        // sets varibles
         String chatChannelId = getConfig().getString("chat-channel-id");
         if (chatChannelId != null) {
             chatChannel = jda.getTextChannelById(chatChannelId);
@@ -49,9 +50,15 @@ public final class Main extends JavaPlugin {
             consoleChannel = jda.getTextChannelById(consoleChannelId);
         }
 
+        String whitelistChannelId = getConfig().getString("whitelist-channel-id");
+        if (whitelistChannelId != null) {
+            whitelistChannel = jda.getTextChannelById(whitelistChannelId);
+        }
+
         Logger logger = (Logger)LogManager.getRootLogger();
         LogAppender appender = new LogAppender();
 
+        // sets up listeners
         if (getConfig().getString("disc-mc-chat") == "true") {
             jda.addEventListener(new DiscordListener());
             getServer().getPluginManager().registerEvents(new SpigotListener(), this);
@@ -62,12 +69,17 @@ public final class Main extends JavaPlugin {
             logger.addAppender(appender);
         }
 
+        if (getConfig().getString("whitelist") == "true") {
+            jda.addEventListener(new WhitelistListener());
+        }
+
 
     }
 
     @Override
     public void onDisable() {
-        consoleChannel.sendMessage("Console Terminated").queue();
+
+        // logs out of bot
         if (jda != null) jda.shutdownNow();
     }
 

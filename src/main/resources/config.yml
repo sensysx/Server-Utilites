@@ -4,6 +4,12 @@ bot-token: '1234'
 #The Id of the Discord channel for the Minecraft to Discord chat
 chat-channel-id: '1234'
 
+#The Id of the Discord channel for Whitelisting a member
+whitelist-channel-id: '1234'
+
+#Whitelisting is enabled by default to disable it replace 'true' with 'false'
+whitelist: 'true'
+
 #The Minecraft to Discord Chat is enabled by default to disable it replace 'true' with 'false'
 disc-mc-chat: 'true'
 
