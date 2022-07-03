@@ -1,0 +1,7 @@
+name: Server-Utilities
+version: '${project.version}'
+main: me.sensys.serverutils.Main
+api-version: 1.19
+authors: [ sensysx ]
+description: Server Utilitys Is a helpful plugin that help reduce lag and other features
+website: solo.to/sensysx
