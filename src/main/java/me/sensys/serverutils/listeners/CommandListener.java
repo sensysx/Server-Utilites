@@ -5,14 +5,12 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import me.sensys.serverutils.Main;
-import org.bukkit.Bukkit;
 
 import static org.bukkit.Bukkit.getServer;
 
 public final class CommandListener extends ListenerAdapter {
 
-
-
+    // sends console commands in discord and sends them to the server console
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (!event.getChannel().equals(Main.consoleChannel)) return;

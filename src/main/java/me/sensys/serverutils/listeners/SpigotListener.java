@@ -17,8 +17,6 @@ import java.util.Map;
 import me.sensys.serverutils.Main;
 import org.bukkit.plugin.java.JavaPlugin;
 
-
-
 public class SpigotListener extends JavaPlugin implements Listener {
 
     private final Map<String, String> advancementToDisplayMap = new HashMap<>();
@@ -32,7 +30,6 @@ public class SpigotListener extends JavaPlugin implements Listener {
             }
         }
     }
-
 
     // says what to do when someone types, joins, leaves, dies, or gets a achievement
     @EventHandler
@@ -65,6 +62,7 @@ public class SpigotListener extends JavaPlugin implements Listener {
         sendMessage(event.getPlayer(), event.getPlayer().getDisplayName() + " has made the advancement {" + display +"}", true, Color.CYAN);
     }
 
+    // defines send message
     public void sendMessage(Player player, String content, boolean contentInAuthorLine, Color color) {
         if (Main.chatChannel == null) return;
 

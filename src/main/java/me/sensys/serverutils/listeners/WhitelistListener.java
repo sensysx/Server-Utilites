@@ -39,7 +39,7 @@ public class WhitelistListener extends ListenerAdapter {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (event.getMessage().getContentDisplay().startsWith("whitelist/")) {
 
-            // makes sure its the right channel
+            // makes sure its the right channel before it runs the rest of the code
             if (!event.getChannel().equals(Main.whitelistChannel)) return;
 
             // transfers uuid string into object

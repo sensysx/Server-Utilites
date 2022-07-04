@@ -10,8 +10,7 @@ import me.sensys.serverutils.Main;
 
 public final class DiscordListener extends ListenerAdapter {
 
-
-
+    //takes discord message and sends it to minecraft chat
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (!event.getChannel().equals(Main.chatChannel)) return;

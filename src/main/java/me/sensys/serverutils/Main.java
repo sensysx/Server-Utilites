@@ -39,7 +39,7 @@ public final class Main extends JavaPlugin {
 
         }
 
-        // sets varibles
+        // sets variables
         String chatChannelId = getConfig().getString("chat-channel-id");
         if (chatChannelId != null) {
             chatChannel = jda.getTextChannelById(chatChannelId);
@@ -73,7 +73,6 @@ public final class Main extends JavaPlugin {
             jda.addEventListener(new WhitelistListener());
         }
 
-
     }
 
     @Override
@@ -82,8 +81,6 @@ public final class Main extends JavaPlugin {
         // logs out of bot
         if (jda != null) jda.shutdownNow();
     }
-
-
 
 }
 
