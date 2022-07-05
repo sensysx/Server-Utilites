@@ -1,6 +1,9 @@
 #Your discord bot token
 bot-token: '1234'
 
+#The id of your discord server
+guild-id: '1234'
+
 #The Id of the Discord channel for the Minecraft to Discord chat
 chat-channel-id: '1234'
 

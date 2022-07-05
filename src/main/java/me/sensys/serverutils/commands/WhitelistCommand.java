@@ -1,7 +1,7 @@
-package me.sensys.serverutils.listeners;
+package me.sensys.serverutils.commands;
 
 import me.sensys.serverutils.Main;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.UUID;
 
-public class WhitelistListener extends ListenerAdapter {
+public class WhitelistCommand extends ListenerAdapter {
 
     // converts minecraft username to uuid
     public String getUuid(String name) {
@@ -33,17 +33,14 @@ public class WhitelistListener extends ListenerAdapter {
         return "error";
     }
 
-    //  sets prefix variable
-    String whitelistcommand = "whitelist/";
+    public void onSlashCommandInteraction(@NotNull SlashCommandEvent event) {
+        if (event.getName().equals("whitelist")) {
+            if (!event.getChannel().equals(Main.whitelistChannel)) {
+                event.reply("Please use the designated whitelist channel, thank you").setEphemeral(true).queue();
+            }
 
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        if (event.getMessage().getContentDisplay().startsWith("whitelist/")) {
-
-            // makes sure its the right channel before it runs the rest of the code
-            if (!event.getChannel().equals(Main.whitelistChannel)) return;
-
-            // transfers uuid string into object
-            String username = (event.getMessage().getContentDisplay().replace(whitelistcommand, ""));
+            // turns the the uuid into a object from a string
+            String username = event.getOption("username").getAsString();
             String Uuid = getUuid(username);
             final OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(java.util.UUID.fromString(Uuid.replaceFirst("(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}+)", "$1-$2-$3-$4-$5")).toString()));
 
@@ -51,8 +48,8 @@ public class WhitelistListener extends ListenerAdapter {
             player.setWhitelisted(true);
 
             // sends message when you are whitelisted
-            event.getMessage().reply(username + "has been whitelisted").queue();
+            event.reply(username + "has been whitelisted").queue();
         }
-
     }
+
 }

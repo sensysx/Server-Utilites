@@ -2,9 +2,13 @@ package me.sensys.serverutils;
 
 import lombok.SneakyThrows;
 import me.sensys.serverutils.listeners.*;
+import me.sensys.serverutils.commands.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,6 +23,7 @@ public final class Main extends JavaPlugin {
     public static TextChannel consoleChannel;
     public static TextChannel whitelistChannel;
     public static Plugin plugin;
+    public static Guild guild;
 
     @SneakyThrows
     @Override
@@ -55,6 +60,13 @@ public final class Main extends JavaPlugin {
             whitelistChannel = jda.getTextChannelById(whitelistChannelId);
         }
 
+        String guildId = getConfig().getString("guild-id");
+        if (consoleChannelId != null) {
+            guild = jda.getGuildById(guildId);
+        } else {
+            System.out.println("Guild ID null, Please check your discord server id in the config for any mistakes");
+        }
+
         Logger logger = (Logger)LogManager.getRootLogger();
         LogAppender appender = new LogAppender();
 
@@ -69,9 +81,11 @@ public final class Main extends JavaPlugin {
             logger.addAppender(appender);
         }
 
-        if (getConfig().getString("whitelist") == "true") {
-            jda.addEventListener(new WhitelistListener());
-        }
+        guild.updateCommands()
+                .addCommands(new CommandData("whitelist", "whitelists a player in the minecraft server")
+                        .addOption(OptionType.STRING, "username", "The username of the minecraft account that you want to be whitelisted")
+        ).queue();
+
 
     }
 
