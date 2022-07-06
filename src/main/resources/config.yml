@@ -10,14 +10,11 @@ chat-channel-id: '1234'
 #The Id of the Discord channel for Whitelisting a member
 whitelist-channel-id: '1234'
 
-#Whitelisting is enabled by default to disable it replace 'true' with 'false'
-whitelist: 'true'
+#The id of the channel for the console
+console-channel-id: '1234'
 
-#The Minecraft to Discord Chat is enabled by default to disable it replace 'true' with 'false'
-disc-mc-chat: 'true'
-
-#The minecraft to Discord Console chat is enabled by default to disable it replace 'true' with 'false'
-console-api: 'true'
+#The id of the role for the whitelist
+whitelist-role-id: '1234'
 
 
 #SKIP THIS DON'T MATTER TOO MUCH

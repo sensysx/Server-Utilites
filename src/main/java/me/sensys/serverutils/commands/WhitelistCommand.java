@@ -18,6 +18,7 @@ import java.util.UUID;
 public class WhitelistCommand extends ListenerAdapter {
 
     // converts minecraft username to uuid
+
     public String getUuid(String name) {
         String url = "https://api.mojang.com/users/profiles/minecraft/" + name;
         try {
@@ -37,18 +38,25 @@ public class WhitelistCommand extends ListenerAdapter {
         if (event.getName().equals("whitelist")) {
             if (!event.getChannel().equals(Main.whitelistChannel)) {
                 event.reply("Please use the designated whitelist channel, thank you").setEphemeral(true).queue();
+                return;
             }
 
-            // turns the the uuid into a object from a string
+            // turns the uuid into a object from a string
             String username = event.getOption("username").getAsString();
             String Uuid = getUuid(username);
             final OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(java.util.UUID.fromString(Uuid.replaceFirst("(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}+)", "$1-$2-$3-$4-$5")).toString()));
+
+            if (Uuid == "error") {
+                event.reply("Invalid Username").setEphemeral(true).queue();
+                return;
+            }
 
             // whitelists
             player.setWhitelisted(true);
 
             // sends message when you are whitelisted
-            event.reply(username + "has been whitelisted").queue();
+            event.reply(username + "has been whitelisted").setEphemeral(true).queue();
+            event.getGuild().addRoleToMember(event.getMember(), Main.whitelistRole);
         }
     }
 
