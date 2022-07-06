@@ -10,9 +10,14 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,10 +31,19 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import javax.security.auth.login.LoginException;
 import org.apache.logging.log4j.core.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.ParseException;
 
 import java.awt.*;
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
+import static org.bukkit.Bukkit.getServer;
 
 public final class Main extends JavaPlugin {
 
@@ -177,6 +191,47 @@ public final class Main extends JavaPlugin {
         }
     }
 
+    public class WhitelistCommand extends ListenerAdapter {
+
+        // converts minecraft username to uuid
+
+        public String getUuid(String name) {
+            String url = "https://api.mojang.com/users/profiles/minecraft/" + name;
+            try {
+                @SuppressWarnings("deprecation")
+                String UUIDJson = IOUtils.toString(new URL(url));
+                if (UUIDJson.isEmpty()) return "invalid name";
+                JSONObject UUIDObject = (JSONObject) JSONValue.parseWithException(UUIDJson);
+                return UUIDObject.get("id").toString();
+            } catch (IOException | ParseException e) {
+                e.printStackTrace();
+            }
+
+            return "error";
+        }
+
+        @Override
+        public void onSlashCommand(@NotNull SlashCommandEvent event) {
+            if (event.getName().equals("whitelist")) {
+                if (!event.getChannel().equals(Main.whitelistChannel)) {
+                    event.reply("Please use the designated whitelist channel, thank you").setEphemeral(true).queue();
+                    return;
+                }
+
+                // turns the uuid into a object from a string
+                String username = event.getOption("username").getAsString();
+
+                getServer().getScheduler().scheduleSyncDelayedTask(Main.plugin, () -> {
+                    getServer().dispatchCommand(getServer().getConsoleSender(), "whitelist add " + username);
+                });
+
+                // sends message when you are whitelisted
+                event.reply(username + " has been whitelisted").setEphemeral(true).queue();
+                guild.addRoleToMember(event.getMember(), whitelistRole).queue();
+
+            }
+        }
+    }
 }
 
 
