@@ -34,7 +34,8 @@ public class WhitelistCommand extends ListenerAdapter {
         return "error";
     }
 
-    public void onSlashCommandInteraction(@NotNull SlashCommandEvent event) {
+    @Override
+    public void onSlashCommand(@NotNull SlashCommandEvent event) {
         if (event.getName().equals("whitelist")) {
             if (!event.getChannel().equals(Main.whitelistChannel)) {
                 event.reply("Please use the designated whitelist channel, thank you").setEphemeral(true).queue();
