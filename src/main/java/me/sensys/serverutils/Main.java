@@ -2,7 +2,6 @@ package me.sensys.serverutils;
 
 import lombok.SneakyThrows;
 import me.sensys.serverutils.listeners.*;
-import me.sensys.serverutils.commands.*;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -35,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
+import com.sun.tools.javac.tree.JCTree;
 
 import java.awt.*;
 import java.io.IOException;
@@ -116,6 +116,11 @@ public final class Main extends JavaPlugin {
         Logger logger = (Logger) LogManager.getRootLogger();
         LogAppender appender = new LogAppender();
 
+        Bukkit.getConsoleSender().sendMessage("§5   ___   ___   ");
+        Bukkit.getConsoleSender().sendMessage("§5  (__   |__    §3Server Utilities §f- §a Version 1.1.4");
+        Bukkit.getConsoleSender().sendMessage("§5  ___)  |___   §8Running on " + getServer().getVersion() + " - " + getServer().getBukkitVersion());
+        Bukkit.getConsoleSender().sendMessage("");
+
         // sets up listeners
 
         jda.addEventListener(new DiscordListener());
@@ -147,8 +152,9 @@ public final class Main extends JavaPlugin {
                 .setAuthor(
                         contentInAuthorLine ? content : player.getDisplayName(),
                         null,
-                        "https://crafatar.com/avatars/" + player.getUniqueId().toString() + "?overlay=1"
-                );
+                        "https://crafatar.com/avatars/" + player.getUniqueId().toString()
+                )
+                .setColor(color);
 
         if (!contentInAuthorLine) {
             builder.setDescription(content);
@@ -187,7 +193,7 @@ public final class Main extends JavaPlugin {
             String advancementKey = event.getAdvancement().getKey().getKey();
             String display = advancementToDisplayMap.get(advancementKey);
             if (display == null) return;
-            sendMessage(event.getPlayer(), event.getPlayer().getDisplayName() + " has made the advancement {" + display + "}", true, Color.CYAN);
+            sendMessage(event.getPlayer(), event.getPlayer().getDisplayName() + " has made the advancement {" + display + "}", true, new Color(207, 3, 252));
         }
     }
 

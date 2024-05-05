@@ -17,6 +17,7 @@ console-channel-id: '1234'
 whitelist-role-id: '1234'
 
 
+
 #SKIP THIS DON'T MATTER TOO MUCH
 advancementMap:
   "story/mine_stone": "Stone Age"
@@ -93,4 +94,4 @@ advancementMap:
   "husbandry/complete_catalogue": "A Complete Catalogue"
   "husbandry/tactical_fishing": "Tactial Fishing"
   "husbandry/balanced_diet": "A Balanced Diet"
-  "husbandry/obtain_netherite_hoe": "Serious Dedication"
+  "husbandry/obtain_netherite_hoe": "Serious Dedication aka Bro spent money on the hoes"
